@@ -1,0 +1,48 @@
+name: Build
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  VALGRINDFLAGS: --show-reachable=no --show-possibly-lost=no --fair-sched=yes
+  RUSTFLAGS: -D warnings
+  RUST_BACKTRACE: 1
+
+jobs:
+  rust:
+    runs-on: ubuntu-latest
+    name: Build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Setup
+        run: |
+          sudo apt install -y libc6-dbg &
+          rustup update &
+          .github/workflows/install_valgrind &
+          .github/workflows/install_test_deps &
+
+          wait
+      - name: Lint & Test debug build
+        run: |
+          cargo clippy --all-targets
+          cargo test --tests --all-targets
+          cargo valgrind test --tests --all-targets
+      - name: Lint & Test release build
+        run: |
+          cargo clippy -r --all-targets
+          cargo test -r --tests --all-targets
+          cargo valgrind test -r --tests --all-targets
+      - name: Generate test coverage
+        run: cargo llvm-cov --codecov --output-path codecov.json
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: codecov.json
+          slug: davidyz0/xx-pulse

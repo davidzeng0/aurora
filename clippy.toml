@@ -1,0 +1,13 @@
+allowed-wildcard-imports = [
+	"self",
+	"super",
+	"crate",
+	"xx_macros",
+	"xx_proc_macros",
+	"xx_core",
+	"xx_pulse",
+	"xx_url",
+	"xx_mpeg",
+	"syn",
+]
+check-private-items = true
