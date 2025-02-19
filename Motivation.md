@@ -35,19 +35,9 @@ async fn monomorphize(value: &mut impl MyTrait) {
 
 Every async task has a execution context responsible for scheduling running operations asynchronously. <br>
 Normally, it's implicit and hidden from view of normal code, <br>
-but we can get a reference to it using [`xx_pulse::get_context`](https://github.com/davidyz0/xx-core/blob/main/src/coroutines/mod.rs#L78), <br>
-which has the following function signature
+but we can get a reference to it using [`aurora::get_context`](https://davidyz0.github.io/kon/kon/coroutines/fn.get_context.html)
 
-```rust
-pub async fn get_context() -> &'current Context {
-	/* compiler builtin */
-}
-```
-
-The lifetime `'current` is a lifetime that is only valid in the current async function, <br>
-and generates a compiler error when trying to store it, in a global variable, for example.
-
-We can then use `xx_pulse::scoped` to continue execution of an async function later
+We can then use [`aurora::scoped`](https://davidyz0.github.io/kon/kon/coroutines/fn.scoped.html) to continue execution of an async function later
 
 ```rust
 use xx_core::coroutines::Context;
@@ -96,7 +86,7 @@ impl std::io::Read for Adapter<'_> {
 #[asynchronous]
 async fn do_async_read(buf: &mut [u8]) -> std::io::Result<usize> {
     // store the context for use later
-    let async_context = get_context().await;
+    let async_context = get_context();
     let mut reader = Adapter { async_context };
 
     // do the sync read without blocking the thread
@@ -144,55 +134,5 @@ println!("{}", fibonacci(20).await); // 6765
 ```
 
 ### Performance (inlining and [switching](https://github.com/davidyz0/xx-core/blob/main/src/coroutines/README.md))
-```rust
-#[inline(never)] // applies the inline to the `.await`!
-#[asynchronous]
-async fn no_inline() {
-    // the call to `no_inline()` is inlined,
-    // but the await call to the body
-    // will not be inlined
-    ...
-}
 
-#[inline(always)] // zero overhead calling!
-#[asynchronous]
-async fn always_inline() {
-    // the code below will be inlined
-    // into the calling function
-    ...
-}
-
-// the following two functions are identical in performance
-#[asynchronous]
-async fn layered() -> i32 {
-    #[asynchronous]
-    #[inline(always)]
-    async fn add(a: i32, b: i32) -> i32 {
-        a + b
-    }
-
-    #[asynchronous]
-    #[inline(always)]
-    async fn produce_first() -> i32 {
-        5
-    }
-
-    #[asynchronous]
-    #[inline(always)]
-    async fn produce_second() -> i32 {
-        7
-    }
-
-    let (a, b) = (
-        produce_first().await,
-        produce_second().await
-    );
-
-    add(a, b).await
-}
-
-#[asynchronous]
-async fn flattened() -> i32 {
-    12
-}
-```
+Generally, linear code without state machines optimizes better.
