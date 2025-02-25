@@ -45,4 +45,4 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: codecov.json
-          slug: davidyz0/xx-pulse
+          slug: davidzeng0/xx-pulse

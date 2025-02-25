@@ -35,9 +35,9 @@ async fn monomorphize(value: &mut impl MyTrait) {
 
 Every async task has a execution context responsible for scheduling running operations asynchronously. <br>
 Normally, it's implicit and hidden from view of normal code, <br>
-but we can get a reference to it using [`aurora::get_context`](https://davidyz0.github.io/kon/kon/coroutines/fn.get_context.html)
+but we can get a reference to it using [`aurora::get_context`](https://davidzeng0.github.io/kon/kon/coroutines/fn.get_context.html)
 
-We can then use [`aurora::scoped`](https://davidyz0.github.io/kon/kon/coroutines/fn.scoped.html) to continue execution of an async function later
+We can then use [`aurora::scoped`](https://davidzeng0.github.io/kon/kon/coroutines/fn.scoped.html) to continue execution of an async function later
 
 ```rust
 use xx_core::coroutines::Context;
@@ -133,6 +133,6 @@ async fn fibonacci(n: i32) -> i32 {
 println!("{}", fibonacci(20).await); // 6765
 ```
 
-### Performance (inlining and [switching](https://github.com/davidyz0/xx-core/blob/main/src/coroutines/README.md))
+### Performance (inlining and [switching](https://github.com/davidzeng0/xx-core/blob/main/src/coroutines/README.md))
 
 Generally, linear code without state machines optimizes better.

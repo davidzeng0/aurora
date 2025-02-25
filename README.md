@@ -2,11 +2,11 @@
 
 ## This library is currently in the process of migration and repairs
 
-![](https://github.com/davidyz0/xx-pulse/actions/workflows/build.yml/badge.svg?event=push)
+![](https://github.com/davidzeng0/xx-pulse/actions/workflows/build.yml/badge.svg?event=push)
 
 `msrv: 1.80.0 stable`
 
-[Documentation](https://davidyz0.github.io/aurora)
+[Documentation](https://davidzeng0.github.io/aurora)
 
 I/O at the speed of light. See [benchmarks](./benchmarks/README.md).
 
@@ -30,10 +30,10 @@ The following is a simple echo server example
 #### Add dependency
 ```sh
 # support lib and async impls
-cargo add --git https://github.com/davidyz0/xx-core.git xx-core
+cargo add --git https://github.com/davidzeng0/xx-core.git xx-core
 
 # i/o engine and driver
-cargo add --git https://github.com/davidyz0/xx-pulse.git xx-pulse
+cargo add --git https://github.com/davidzeng0/xx-pulse.git xx-pulse
 ```
 
 In file `main.rs`

@@ -5,7 +5,7 @@ edition = "2021"
 
 [dependencies]
 syn = { version = "2.0.69", features = ["full"] }
-xx-macros = { git = "https://github.com/davidyz0/xx-macros.git" }
+xx-macros = { git = "https://github.com/davidzeng0/xx-macros.git" }
 
 [lib]
 proc-macro = true
